@@ -30,13 +30,12 @@ A dataset containing the results of over 400k auctions of heavy farm equipment
 - Our GradientBoostedRegressor yeilded R2 score of 0.519 with defualt parameters. 
 - Adjusting defaults, we found a lower learning rate (0.05), higher n_estimators, and higher max_depth increased our score to 0.539
   - due to timing out on the grid search, we manually adjusted hyperparameters to improve our score. 
-- Using a DecisionTreeClassifier, we were able to obtain a score of 0.471 against our holdout data. 
+- Using a DecisionTreeClassifier, we were able to obtain an R2 score of 0.471 against our holdout data. 
 
 
 ![Lower_rate](https://user-images.githubusercontent.com/70020774/111010884-04bebd00-8355-11eb-9bf3-96b04c9dd4c3.png)
 
 ![bestscore](https://user-images.githubusercontent.com/70020774/111011325-3edc8e80-8356-11eb-8120-eddba379cda2.png)
-
 
 #### (Austin)
 ## Our challenges: 
