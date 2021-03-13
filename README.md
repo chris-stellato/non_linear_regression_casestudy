@@ -1,103 +1,43 @@
 # Regression Case Study
 
+#### (Ben) 
+## The Challenge: 
+Our goal is to build a machine learning model that makes a prediction for sale price of a piece of heavy equipment at auction based on its equipment type, usage, and configuration. 
 
-In today's exercise you'll get a chance to try some of what you've learned
-about supervised learning on a real-world problem.
+## The Data: 
+A dataset containing the results of over 400k auctions of heavy farm equipment
 
-The goal of the contest is to predict the sale price of a particular piece of
-heavy equipment at auction based on its usage, equipment type, and
-configuration.  The data is sourced from auction result postings and includes
-information on usage and equipment configurations.
+## Our approach: 
 
-## Data
+- EDA 
+- Select columns we could immediately throw out
 
-The data for this case study are in `./data` in zip files.
+#### (Chris) 
+- Create multiple helper functions to help us clean the data:
+  - Transform text-based columns with less than 10 unique values into dummy columns
+  - Use dummy columns to deal with nans
+  - With our numerical column (machine hours), replace all nans with median value
+  - scale the data
+  - create a train test split
+- create a helper function that would fit various models to our data when excuted
+- create an aggregator function to run all of the helper functions
+- ran a grid search to find optimized hyperparameters (run-time was too long, computer did not finish prior to deadline) 
 
-## Note: Do not unzip these files.
-
-
-If you unzip these files, they will be too large to upload to GitHub (unless you
-use git LFS). More importantly, pandas can read dataframes from inside zip files
-automatically, so there is no need to unzip them at all.
-
-You can read directly from a zip file using:
-```
-df = pd.read_csv('data/Train.zip')
-```
-
-Use `Train.zip` for traning and validation. Don't use the Holdout data until you
-have a final model.  There is *a lot* of data. You may find it convenient to work with only 10% of the data at first, until you get a working model.
-
-The `data_dictionary.csv` file contains some supplementary information that might interset you if you intend to become an expert in heavy machinery.
-
-Spend some time (but not too much) getting to know the data. You will need a 
-strategy for dealing with missing values and categorical values. 
-
-I encourage  you to automate that process so you don't need to address each 
-column separately. The sklearn `Pipeline` object is useful for chaining together
-sequences of operations that are needed to transform data in a repeatable way.
-It works on sklearn objects that implement `.fit()` and `.transform()` methods (such as `StandardSclaer`),
-or you can write your own classes that inherit from `TransformerMixin` and 
-provide your own `.fit()` and `.transform()` methods.
-
-https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html
-
-## Evaluation
-
-The prices of the equipment spans a large range and is not uniformly (or
-normally) distributed over that range. This poses the problem with that 
-it tends to over-fit on the more expensive equipment. I.e, if you're off 
-by 20% for an inexpensive piece of equipment, that might be $20, but for an expensive piece of equipment, that might be $2,000. If using a loss function such as MAE, MSE or RMSE, it will work to reduce the error on the expensive equipment, at the cost of worse predictions on the low price equipment.
-
-To solve this problem, tranform the target column (`'SalePrice'`)  using a log-tranform. This will result in a loss function that is sensitive to the ratio of predicted to actual, which takes its minimum value when *p* = *a* as shown (if using RMSE):
-
-![Root Mean Squared Logarithmic Error](images/rmsle.png)
-
-where *p<sub>i</sub>* are the predicted (unscaled) values and *a<sub>i</sub>* are the (unscaled) target values.
-
-Remember that the difference of two logarithms is the logarithm of the 
-*ratio* of the two values, so a 20% difference on a low-price item will 
-count the same as a 20% difference on a high-price item.
-
-The downside is that your prediction will now be in units of *log($)*, which
-is harder to interpret and compare to validation data, so you will have to
-reverse the log-transform to get the final result.
+#### (Joesph)
+## Our results: 
+- Our GradientBoostedRegressor yeilded R2 score of 0.519 with defualt parameters. 
+- Adjusting defaults, we found a lower learning rate, higher n_estimators, and higher max_depth decreased our score to 0.471
+- Using a DecisionTreeClassifier, we were able to obtain a score of 0.471 against our holdout data. 
 
 
-## Modeling
+![Lower_rate](https://user-images.githubusercontent.com/70020774/111010884-04bebd00-8355-11eb-9bf3-96b04c9dd4c3.png)
 
-Remember that of the algorithms we have studied, some are better equipped 
-to handle non-linear regression, categorical variables, large numbers of variables and other issues you may encouter. 
+#### (Austin)
+## Our challenges: 
+- We significantly underestimated two key pieces of the project workflow: 
+  1. We underestimated how much time data wrangling would take, and getting our data prepared for our model
+  2. We underestimated the additional complexities of building a .py file with helper functions, and how much harder that is to troubleshoot than using a notebook. (takes longer to troubleshoot on the frontend, but .py files are more easily used in a production environment). 
 
-You may want to try a variety of models (in an automated way) to compare 
-different approaches.
-
-The best approach is likely to be one which allows you to effortlessly 
-swtich from one model to another.
-
-
-
-## Important Tips
-
-
-1. This data is quite messy. Try to use your judgement about where your
-cleaning efforts will yield the most results and focus there first.
-
-1. Remember any transformations you apply to the training data will also have
-to be applied to the testing data, so plan accordingly.
-
-1. Any transformations of the training data that *learn parameters* (for
-example, standardization learns the mean and variance of a feature) must only
-use parameters learned from the *training data*.
-
-1. It's possible some columns in the test data will take on values not seen in the training data. Plan accordingly.
-
-1. Start simply. Fit a basic model and make sure you're able to get the
-submission working then iterate to improve. Try to develop a model--even if you know it has some weaknesses--within the first two hours.
-
-## Acknowledgement
-
-
-This case study is based on Kaggle's Blue Book for Bulldozers competition. The best RMSLE was only 0.23 (obviously lower is better). Note that if you were to simply guess the median auction price for all the pieces of equipment in the test set you would get an RMSLE of about 0.7.
-
-https://www.kaggle.com/c/bluebook-for-bulldozers
+## What would we do differently? 
+- Begin writing OOP style from the beginning, giving us more time to troubleshoot helper functions
+- Take a different approach to dealing with non-numerical and nan data earlier in the process (we lost a significant amount of time goin down several wrong paths) 
