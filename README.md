@@ -53,4 +53,4 @@ A dataset containing the results of over 400k auctions of heavy farm equipment
 
 ## What would we do differently? 
 - Begin writing OOP style from the beginning, giving us more time to troubleshoot helper functions
-- Take a different approach to dealing with non-numerical and nan data earlier in the process (we lost a significant amount of time goin down several wrong paths) 
+- Take a different approach to dealing with non-numerical and nan data earlier in the process (we lost a significant amount of time going down several wrong paths) 
